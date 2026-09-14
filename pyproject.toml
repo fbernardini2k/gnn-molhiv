@@ -1,0 +1,19 @@
+# File per la struttura del pacchetto 
+# e per la configurazione degli strumenti
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molhiv"
+version = "0.1.0"
+description = "Graph Neural Network su ogbg-molhiv"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
