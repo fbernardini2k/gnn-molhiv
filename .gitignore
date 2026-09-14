@@ -1,0 +1,33 @@
+# --- Dati e artefatti pesanti: mai su git ---
+data/
+dataset/
+*.pt
+*.ckpt
+*.pkl
+
+# I risultati dei run restano locali, tranne le tabelle riassuntive
+results/*
+!results/summary/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+
+# --- Test e tooling ---
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Editor e sistema operativo ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Diario di lavoro personale: resta locale
+CONTESTO.md
