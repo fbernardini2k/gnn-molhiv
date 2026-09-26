@@ -74,3 +74,16 @@ def test_mescolamento_riproducibile(dataset):
         return [int(n) for batch in caricatore for n in batch.batch.bincount()]
 
     assert ordine(0) == ordine(0)
+
+def test_il_mescolamento_cambia_l_ordine(dataset):
+    """Mescolare deve produrre una permutazione: stessi grafi, ordine diverso."""
+    sottoinsieme = dataset[:200]
+    naturale = [int(sottoinsieme[i].num_nodes) for i in range(200)]
+    mescolato = [
+        int(n)
+        for batch in crea_dataloader(sottoinsieme, batch_size=16, mescola=True, seed=0)
+        for n in batch.batch.bincount()
+    ]
+
+    assert sorted(mescolato) == sorted(naturale)  # non si è perso né duplicato nulla
+    assert mescolato != naturale                  # e l'ordine è cambiato davvero

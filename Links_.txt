@@ -1,3 +1,0 @@
-https://ogb.stanford.edu/docs/graphprop/#ogbg-mol
-
-ogbg-molhiv

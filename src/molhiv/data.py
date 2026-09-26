@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import torch
+import os
 from ogb.graphproppred import PygGraphPropPredDataset
 from torch_geometric.loader import DataLoader
 
@@ -14,15 +15,21 @@ NOME_DATASET = "ogbg-molhiv"
 RADICE_REPO = Path(__file__).resolve().parents[2]
 CARTELLA_DATI = RADICE_REPO / "data"
 
+def cartella_dati_predefinita() -> Path:
+    """Dove finiscono i dati scaricati.
 
-def carica_dataset(root: Path | str = CARTELLA_DATI) -> PygGraphPropPredDataset:
-    """Restituisce il dataset, scaricandolo al primo utilizzo.
-
-    Il percorso è calcolato a partire dalla posizione di questo file, non dalla
-    cartella da cui lanci il comando: così il dataset finisce sempre in data/
-    che sia chiamato da uno script, da un test o dal REPL.
+    Priorità alla variabile d'ambiente MOLHIV_DATA: serve in CI, su macchine
+    con poco spazio sul disco di sistema, o per condividere un download già
+    fatto tra più copie del progetto. Altrimenti data/ nella radice del repo,
+    che è il caso dello sviluppo in editable.
     """
-    root = Path(root)
+    if percorso := os.environ.get("MOLHIV_DATA"):
+        return Path(percorso)
+    return Path(__file__).resolve().parents[2] / "data"
+
+def carica_dataset(root: Path | str | None = None) -> PygGraphPropPredDataset:
+    """Restituisce il dataset, scaricandolo al primo utilizzo."""
+    root = Path(root) if root is not None else cartella_dati_predefinita()
     root.mkdir(parents=True, exist_ok=True)
     return PygGraphPropPredDataset(name=NOME_DATASET, root=str(root))
 
